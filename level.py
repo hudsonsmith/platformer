@@ -7,6 +7,7 @@ class Level(object):
         self.display_surface = surface
         self.world_shift = 0
         self.tile_color = tile_color
+        self.settings = settings
 
         # Run the setup after the internal settings are set.
         self.setup_level(level_data, settings)
@@ -37,3 +38,15 @@ class Level(object):
         # Player
         self.player.update()
         self.player.draw(self.display_surface)
+
+        self.scroll_x()
+
+    def scroll_x(self) -> None:
+        player = self.player.sprite
+        player_x = player.rect.centerx
+        direction_x = player.direction.x
+
+        # If the player goes to far right, scroll the screen.
+        if player_x > self.settings.res.current_w - ((self.settings.tile_size / 2) + self.settings.tile_size / 2):
+            self.world_shift = -(self.settings.tile_size / 10)
+            player.speed = 0

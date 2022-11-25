@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2(0, 0)
         self.tile_size = tile_size
-        self.movement_interval = tile_size / 10
+        self.speed = tile_size / 10
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -36,10 +36,10 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
     def move_left(self):
-        self.direction.x = -self.movement_interval
+        self.direction.x = -self.speed
 
     def move_right(self):
-        self.direction.x = self.movement_interval
+        self.direction.x = self.speed
 
     def update(self):
         self.get_input()

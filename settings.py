@@ -14,3 +14,4 @@ class Settings(object):
         ]
 
         self.tile_size = res.current_h / len(self.level_map)
+        self.res = res
