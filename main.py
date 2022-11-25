@@ -2,6 +2,7 @@ import pygame, sys
 from tiles import Tile
 from level import Level
 from settings import *
+from intro import Intro
 
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -12,6 +13,7 @@ res = pygame.display.Info()
 s = Settings(res)
 
 level = Level(s.level_map, screen, s)
+intro = Intro(screen)
 
 
 
@@ -23,6 +25,7 @@ if __name__ == "__main__":
                 sys.exit()
 
 
+        screen.fill("black")
         level.run()
 
         pygame.display.update()
