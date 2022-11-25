@@ -4,12 +4,17 @@ from os import system
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, color, tile_size) -> None:
         super().__init__()
-        self.image = pygame.Surface((tile_size / 2, tile_size))
+        self.width = tile_size / 2
+        self.height = tile_size
+
+        self.image = pygame.Surface((self.width, self.height))
         self.image.fill(color)
+
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2(0, 0)
         self.tile_size = tile_size
         self.speed = tile_size / 10
+
 
     def get_input(self):
         keys = pygame.key.get_pressed()

@@ -45,8 +45,13 @@ class Level(object):
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
+        tile_size = self.settings.tile_size
 
         # If the player goes to far right, scroll the screen.
-        if player_x > self.settings.res.current_w - ((self.settings.tile_size / 2) + self.settings.tile_size / 2):
-            self.world_shift = -(self.settings.tile_size / 10)
+        if player_x > self.settings.res.current_w - (tile_size + player.width):
+            self.world_shift = -(tile_size / 10)
             player.speed = 0
+
+        elif player_x < (player.width) + tile_size:
+            player.speed = 0
+            self.world_shift = tile_size / 10
