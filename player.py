@@ -17,6 +17,10 @@ class Player(pygame.sprite.Sprite):
         self.default_speed = tile_size / 10
         self.speed = self.default_speed
 
+        # Vars that determine if the player has hit the level scrolling boundaries yet.
+        self.right_boundary = False
+        self.left_boundary = False
+
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -43,11 +47,34 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
     def move_left(self):
+        self.speed = self.default_speed
         self.direction.x = -self.speed
 
     def move_right(self):
+        self.speed = self.default_speed
         self.direction.x = self.speed
 
     def update(self):
         self.get_input()
-        self.rect.x += self.direction.x
+
+        # If the right boundary is not hit, move the player to the right.
+        if self.direction.x > 0 and self.right_boundary == False:
+            print(f"MOVING RIGHT: {self.direction.x}")
+            self.rect.x += self.direction.x
+        
+        # If the left boundary is not hit, move the player to the left.
+        elif self.direction.x < 0 and self.left_boundary == False:
+            print(f"MOVING LEFT: {self.direction.x}")
+            self.rect.x += self.direction.x
+
+        if self.right_boundary == True and self.direction.x == 0.0:
+            print(f"AUTO SCROLLING at speed: {self.speed}")
+
+        # If the player is in the right boundary and the direction is going left, stop scrolling.
+        if self.right_boundary == True and self.direction.x < 0:
+            self.right_boundary = False
+            self.rect.x += self.direction.x
+
+
+
+

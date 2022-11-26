@@ -42,28 +42,67 @@ class Level(object):
 
         self.scroll_x()
 
+
+
     def scroll_x(self) -> None:
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
         tile_size = self.settings.tile_size
 
-        system("cls")
-        print(f"DIRECTION_X: {direction_x}")
-
         right_pos = self.settings.res.current_w - (tile_size + player.width)
         left_pos = (player.width) + tile_size
 
+
+
+        #########################################################################
+        #                              RIGHT SCROLL                             #
+        #########################################################################
+        # If the player was scrolling right, allow them to come back to the left.
+        if player_x > right_pos and direction_x == 0.0:
+            self.world_shift = 0
+            player.speed = 0
+
         # If the player goes to far right, scroll the screen.
-        if player_x > right_pos and direction_x > 0:
-            player.speed = 0
+        elif player_x > right_pos and direction_x > 0:
+            player.right_boundary = True
             self.world_shift = -player.default_speed
-
-        # Too far left.
-        elif player_x < left_pos:
             player.speed = 0
-            self.world_shift = player.default_speed
 
-        else:
+
+
+        #########################################################################
+        #                              LEFT SCROLL                              #
+        #########################################################################
+        # If the player was scrolling right, allow them to come back to the left.
+        if player_x < left_pos and direction_x == 0.0:
+            self.world_shift = 0
+            player.speed = 0
+
+        # If the player goes to far right, scroll the screen.
+        elif player_x < left_pos and direction_x < 0:
+            player.left_boundary = True 
+            self.world_shift = player.default_speed
+            player.speed = 0
+
+        
+        # # Too far left.
+        # elif player_x < left_pos:
+        #     player.left_boundary = True
+        #     self.world_shift = player.default_speed
+        #     player.speed = 0
+
+
+        # Flag logics, when the player is outside of the boundaries.
+
+        # Is out of the left boundary.
+        if player_x > left_pos:
+            player.left_boundary = False 
+
+        # Is out of the right boundary.
+        if player_x < right_pos:
+            player.right_boundary = False
+
+        if player.right_boundary == False and player.left_boundary == False:
             self.world_shift = 0
             player.speed = player.default_speed
