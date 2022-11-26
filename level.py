@@ -1,6 +1,7 @@
 import pygame
 from tiles import Tile
 from player import Player
+from os import system
 
 class Level(object):
     def __init__(self, level_data, surface, settings, tile_color="grey") -> None:
@@ -47,11 +48,22 @@ class Level(object):
         direction_x = player.direction.x
         tile_size = self.settings.tile_size
 
-        # If the player goes to far right, scroll the screen.
-        if player_x > self.settings.res.current_w - (tile_size + player.width):
-            self.world_shift = -(tile_size / 10)
-            player.speed = 0
+        system("cls")
+        print(f"DIRECTION_X: {direction_x}")
 
-        elif player_x < (player.width) + tile_size:
+        right_pos = self.settings.res.current_w - (tile_size + player.width)
+        left_pos = (player.width) + tile_size
+
+        # If the player goes to far right, scroll the screen.
+        if player_x > right_pos and direction_x > 0:
             player.speed = 0
-            self.world_shift = tile_size / 10
+            self.world_shift = -player.default_speed
+
+        # Too far left.
+        elif player_x < left_pos:
+            player.speed = 0
+            self.world_shift = player.default_speed
+
+        else:
+            self.world_shift = 0
+            player.speed = player.default_speed

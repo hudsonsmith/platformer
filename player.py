@@ -13,7 +13,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2(0, 0)
         self.tile_size = tile_size
-        self.speed = tile_size / 10
+
+        self.default_speed = tile_size / 10
+        self.speed = self.default_speed
 
 
     def get_input(self):
