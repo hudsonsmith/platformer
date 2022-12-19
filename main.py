@@ -3,6 +3,8 @@ from tiles import Tile
 from level import Level
 from settings import *
 from intro import Intro
+from time import sleep
+
 
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)

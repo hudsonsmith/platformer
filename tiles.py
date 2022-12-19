@@ -1,4 +1,7 @@
 import pygame
+import time
+
+
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, pos, size, color="grey") -> None:

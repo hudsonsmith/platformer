@@ -17,9 +17,19 @@ class Player(pygame.sprite.Sprite):
         self.default_speed = tile_size / 10
         self.speed = self.default_speed
 
+        self.gravity = self.speed * 1.5
+        self.jump_speed = -self.speed * 4
+
         # Vars that determine if the player has hit the level scrolling boundaries yet.
         self.right_boundary = False
         self.left_boundary = False
+    
+    def apply_gravity(self) -> None:
+        self.direction.y += self.gravity
+        self.rect.y += self.direction.y
+    
+    def jump(self) -> None:
+        self.direction.y = self.jump_speed
 
 
     def get_input(self):
@@ -29,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         A = keys[pygame.K_a] > 0
         S = keys[pygame.K_s] > 0
         D = keys[pygame.K_d] > 0
+        SPACE = keys[pygame.K_SPACE] > 0
 
         # system("cls")
 
@@ -45,6 +56,14 @@ class Player(pygame.sprite.Sprite):
 
         else:
             self.direction.x = 0
+        
+
+        # Vertical movement
+        if SPACE:
+            self.jump()
+        
+        else:
+            self.direction.y = 0
 
     def move_left(self):
         self.speed = self.default_speed
@@ -75,6 +94,7 @@ class Player(pygame.sprite.Sprite):
             self.right_boundary = False
             self.rect.x += self.direction.x
 
+        self.apply_gravity()
 
 
 
