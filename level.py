@@ -31,16 +31,6 @@ class Level(object):
                     self.player.add(player_sprite)
 
 
-    def run(self) -> None:
-        # Level tiles
-        self.tiles.update(self.world_shift)
-        self.tiles.draw(self.display_surface)
-
-        # Player
-        self.player.update()
-        self.player.draw(self.display_surface)
-
-        self.scroll_x()
 
 
 
@@ -106,3 +96,46 @@ class Level(object):
         if player.right_boundary == False and player.left_boundary == False:
             self.world_shift = 0
             player.speed = player.default_speed
+
+
+    def horizontal_movement_collision(self):
+        player = self.player.sprite
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                # Moving left.
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+    
+
+    def vertical_movement_collision(self):
+        player = self.player.sprite
+        player.apply_gravity()
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                # Moving up.
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+
+                # Moving down.
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+
+
+    def run(self) -> None:
+        # Level tiles
+        self.tiles.update(self.world_shift)
+        self.tiles.draw(self.display_surface)
+
+        # Player
+        self.player.update()
+        self.vertical_movement_collision()
+        self.horizontal_movement_collision()
+
+        self.player.draw(self.display_surface)
+
+        self.scroll_x()
